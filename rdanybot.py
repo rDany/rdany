@@ -18,7 +18,7 @@ class bot:
     emoji_silent = '😁'
 
     def __init__ (self):
-        self.conn = sqlite3.connect('rdany.db')
+        self.conn = sqlite3.connect('database/rdany.db')
         self.c = self.conn.cursor()
         
         try:
