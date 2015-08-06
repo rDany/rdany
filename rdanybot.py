@@ -62,6 +62,9 @@ class bot:
         except requests.exceptions.ConnectionError:
             print ("Connection Error")
             return None
+        except requests.exceptions.ReadTimeout:
+            print ("Connection Timeout")
+            return None
         return r
 
     def get_last_update(self):
@@ -203,7 +206,7 @@ class bot:
 Bot = bot()
 
 while 1:
-    Bot.bot_loop()
+    #Bot.bot_loop()
     try:
         Bot.bot_loop()
     except KeyboardInterrupt:
