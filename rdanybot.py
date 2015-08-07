@@ -16,6 +16,8 @@ class bot:
 
     emoji_oh = '😱'
     emoji_silent = '😁'
+    emoji_earth_wireframe = '🌐'
+    emoji_number = '#⃣'
 
     def __init__ (self):
         self.conn = sqlite3.connect('database/rdany.db')
@@ -62,7 +64,7 @@ class bot:
         except requests.exceptions.ConnectionError:
             print ("Connection Error")
             return None
-        except requests.exceptions.ReadTimeout:
+        except requests.exceptions.Timeout:
             print ("Connection Timeout")
             return None
         return r
@@ -112,7 +114,21 @@ class bot:
             return chat[1]
         else:
             return None
-            
+    
+    def send_msg(self, msgs, chat_id, action=False):
+        for msg in msgs:
+            if action:
+                data = {
+                    'chat_id': chat_id,
+                    'action': 'typing'
+                }
+                r = self.send_to_bot('sendChatAction', data = data)
+            data = {
+                'chat_id': chat_id,
+                'text': msg,
+            }
+            r = self.send_to_bot('sendMessage', data = data)
+    
     def bot_loop(self):
         while 1:
             # Send messages
@@ -168,9 +184,29 @@ class bot:
                     # Text
                     if 'text' in message:
                         text = message['text']
+                        msgs_commands = []
+                        if text == '/help':
+                            msgs_commands.append(['[Terminal Start]'])
+                            msgs_commands.append(['"Yo puse en funcionamiento a rDany, solo espero que su sufrimiento en éste mundo no sea muy grande."\n@Eibriel\n\nDejá tu comentario: https://telegram.me/storebot?start=rdanybot'])
+                            msgs_commands.append(['[Terminal End]'])
+                            self.send_msg(msgs_commands, chat_id)
+                            continue
+                        elif text == '/settings':
+                            msgs_commands.append(['[Terminal Start]'])
+                            msgs_commands.append(['ERROR: Settings no ha sido implementado.'])
+                            msgs_commands.append(['[Terminal End]'])
+                            self.send_msg(msgs_commands, chat_id)
+                            continue
+                        elif text == '/interference':
+                            msgs_commands.append(['[Terminal Start]'])
+                            msgs_commands.append(['Nivel de interferencia en la comunicación: {0}% {1}'.format(random.randint(88, 100), self.emoji_earth_wireframe)])
+                            msgs_commands.append(['[Terminal End]'])
+                            self.send_msg(msgs_commands, chat_id)
+                            continue
+                        
                         if text[0] == '/':
                             text = text[1:]
-                        elif text[0:9] == '@HovyuBot ':
+                        elif text[0:9] == '@rDanyBot ':
                             text = text[10:]
 
                     if text[0:18] == 'add-first-contact ':
@@ -191,17 +227,7 @@ class bot:
                     else:
                         msgs.append([self.get_msg('story')])
                     
-                for msg in msgs:
-                    data = {
-                        'chat_id': chat_id,
-                        'action': 'typing'
-                    }
-                    r = self.send_to_bot('sendChatAction', data = data)
-                    data = {
-                        'chat_id': chat_id,
-                        'text': msg,
-                    }
-                    r = self.send_to_bot('sendMessage', data = data)
+                self.send_msg(msgs, chat_id, True)
 
 Bot = bot()
 
