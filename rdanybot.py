@@ -91,8 +91,8 @@ class bot:
         self.conn.commit()
 
     def get_msg(self, type_):
-        settings = self.c.execute("SELECT * FROM messages WHERE type=?", (type_,))
-        msg = settings.fetchall()
+        messages = self.c.execute("SELECT * FROM messages WHERE type=?", (type_,))
+        msg = messages.fetchall()
         #print (msg)
         if len(msg) > 0:
             msg = random.choice(msg)[2]
@@ -120,18 +120,30 @@ class bot:
             return None
             
     def get_chats_stats(self):
+        messages = self.c.execute("SELECT COUNT(*) FROM messages")
+        messages = messages.fetchone()
+        msg_count = messages[0]
         chats = self.c.execute("SELECT lenght FROM chats")
         chats = chats.fetchall()
         if chats:
             average_lenght = 0.0
             count = 0
+            ratio = 0
             for chat in chats:
                 count += chat[0]
+                if chat[0]>0:
+                    if chat[0] > msg_count:
+                        ratio += 1.0
+                    else:
+                        ratio += msg_count / chat[0]
             if len(chats) > 0:
                 average_lenght = count / len(chats)
+                average_ratio = ratio / len(chats)
             stats = {
                 'count': len(chats),
-                'average_lenght': average_lenght
+                'average_lenght': average_lenght,
+                'average_ratio': average_ratio,
+                'msg_count': msg_count
             }
             return stats
         else:
@@ -220,7 +232,7 @@ class bot:
                             continue
                         elif text == '/chats':
                             chats_stats = self.get_chats_stats()
-                            msgs_commands.append(['[Terminal Start]\nChats: {0}\nLongitud promedio: {1}\n[Terminal End]'.format(chats_stats['count'], chats_stats['average_lenght'])])
+                            msgs_commands.append(['[Terminal Start]\nChats: {0}\nLongitud promedio: {1}\nRatio promedio: {2}\nMensajes: {3}\n[Terminal End]'.format(chats_stats['count'], chats_stats['average_lenght'], chats_stats['average_ratio'], chats_stats['msg_count'])])
                             self.send_msg(msgs_commands, chat_id)
                             continue
                         
@@ -256,7 +268,7 @@ class bot:
 Bot = bot()
 
 while 1:
-    Bot.bot_loop()
+    #Bot.bot_loop()
     try:
         Bot.bot_loop()
     except KeyboardInterrupt:
