@@ -219,7 +219,7 @@ class bot:
                         text = message['text']
                         msgs_commands = []
                         if text == '/help':
-                            msgs_commands.append(['[Terminal Start]\n"Yo puse en funcionamiento a rDany, solo espero que su sufrimiento en éste mundo no sea muy grande."\n@Eibriel\n\nCalificá a @rDanyBot en StoreBot: https://telegram.me/storebot?start=rdanybot\n[Terminal End]'])
+                            msgs_commands.append(['[Terminal Start]\n"Yo puse en funcionamiento a rDany, solo espero que su sufrimiento en éste mundo no sea muy grande."\n@Eibriel\n\nCalificá a rDanyBot en StoreBot:\nhttps://telegram.me/storebot?start=rdanybot\n[Terminal End]'])
                             self.send_msg(msgs_commands, chat_id)
                             continue
                         elif text == '/settings':
@@ -263,6 +263,9 @@ class bot:
                     else:
                         msgs.append([self.get_msg('story')])
                     
+                    if 0 == chat_lenght % 10 and chat_lenght <= 30:
+                        msgs.append(['[Terminal Start]\nCalificá a rDanyBot en StoreBot:\nhttps://telegram.me/storebot?start=rdanybot\n[Terminal End]'])
+
                 self.send_msg(msgs, chat_id, True)
 
 Bot = bot()
