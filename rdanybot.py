@@ -135,7 +135,7 @@ class bot:
                     if chat[0] > msg_count:
                         ratio += 1.0
                     else:
-                        ratio += msg_count / chat[0]
+                        ratio += chat[0] / msg_count
             if len(chats) > 0:
                 average_lenght = count / len(chats)
                 average_ratio = ratio / len(chats)
