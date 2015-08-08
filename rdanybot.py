@@ -201,7 +201,6 @@ class bot:
                     keys = []
 
                     chat_id = message['chat']['id']
-                    self.add_chat_lenght(chat_id)
 
                     # Text
                     if 'text' in message:
@@ -232,11 +231,15 @@ class bot:
 
                     if text[0:18] == 'add-first-contact ':
                         self.add_msg('first-contact', text[18:], message['from']['id'])
+                        continue
                     elif text[0:9] == 'add-idea ':
                         self.add_msg('idea', text[9:], message['from']['id'])
+                        continue
                     elif text[0:10] == 'add-story ':
                         self.add_msg('story', text[10:], message['from']['id'])
+                        continue
 
+                    self.add_chat_lenght(chat_id)
                     chat_lenght = self.get_chat_lenght(chat_id)
                     print ('chat lenght {0}'.format(chat_lenght))
 
