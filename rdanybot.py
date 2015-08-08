@@ -11,6 +11,7 @@ import sqlite3
 
 class bot:
     bot_token = Config.bot_token
+    admin_id = Config.admin_id
 
     chats = {}
 
@@ -72,7 +73,7 @@ class bot:
     def get_last_update(self):
         settings = self.c.execute('SELECT * FROM settings WHERE id=1')
         last_update = settings.fetchone()[2]
-        print (last_update)
+        #print (last_update)
         return int(last_update)
 
 
@@ -82,14 +83,17 @@ class bot:
         self.conn.commit()
 
 
-    def add_msg(self, type_, msg):
+    def add_msg(self, type_, msg, user_id):
+        if user_id != self.admin_id:
+            print ('Forbidden')
+            return False
         self.c.execute("INSERT INTO messages (type, value) VALUES (?,?)", (type_, msg))
         self.conn.commit()
 
     def get_msg(self, type_):
         settings = self.c.execute("SELECT * FROM messages WHERE type=?", (type_,))
         msg = settings.fetchall()
-        print (msg)
+        #print (msg)
         if len(msg) > 0:
             msg = random.choice(msg)[2]
             return msg
@@ -112,6 +116,14 @@ class bot:
         chat = chat.fetchone()
         if chat:
             return chat[1]
+        else:
+            return None
+            
+    def get_chats_stats(self):
+        chat = self.c.execute("SELECT COUNT(*) FROM chats")
+        chat = chat.fetchone()
+        if chat:
+            return chat[0]
         else:
             return None
     
@@ -186,21 +198,21 @@ class bot:
                         text = message['text']
                         msgs_commands = []
                         if text == '/help':
-                            msgs_commands.append(['[Terminal Start]'])
-                            msgs_commands.append(['"Yo puse en funcionamiento a rDany, solo espero que su sufrimiento en éste mundo no sea muy grande."\n@Eibriel\n\nDejá tu comentario: https://telegram.me/storebot?start=rdanybot'])
-                            msgs_commands.append(['[Terminal End]'])
+                            msgs_commands.append(['[Terminal Start]\n"Yo puse en funcionamiento a rDany, solo espero que su sufrimiento en éste mundo no sea muy grande."\n@Eibriel\n\nDejá tu comentario: https://telegram.me/storebot?start=rdanybot\n[Terminal End]'])
                             self.send_msg(msgs_commands, chat_id)
                             continue
                         elif text == '/settings':
-                            msgs_commands.append(['[Terminal Start]'])
-                            msgs_commands.append(['ERROR: Settings no ha sido implementado.'])
-                            msgs_commands.append(['[Terminal End]'])
+                            msgs_commands.append(['[Terminal Start]\nERROR: Settings no ha sido implementado.\n[Terminal End]'])
                             self.send_msg(msgs_commands, chat_id)
                             continue
                         elif text == '/interference':
-                            msgs_commands.append(['[Terminal Start]'])
-                            msgs_commands.append(['Nivel de interferencia en la comunicación: {0}% {1}'.format(random.randint(88, 100), self.emoji_earth_wireframe)])
-                            msgs_commands.append(['[Terminal End]'])
+                            msgs_commands.append(['[Terminal Start]\nNivel de interferencia en la comunicación: {0}% {1}\n[Terminal End]'.format(random.randint(88, 100), self.emoji_earth_wireframe)])
+                            self.send_msg(msgs_commands, chat_id)
+                            continue
+                        elif text == '/chats':
+                            chats_stats = self.get_chats_stats()
+                            print (chats_stats)
+                            msgs_commands.append(['[Terminal Start]\nChats: {0}\n[Terminal End]'.format(chats_stats)])
                             self.send_msg(msgs_commands, chat_id)
                             continue
                         
@@ -210,11 +222,11 @@ class bot:
                             text = text[10:]
 
                     if text[0:18] == 'add-first-contact ':
-                        self.add_msg('first-contact', text[18:])
+                        self.add_msg('first-contact', text[18:], message['from']['id'])
                     elif text[0:9] == 'add-idea ':
-                        self.add_msg('idea', text[9:])
+                        self.add_msg('idea', text[9:], message['from']['id'])
                     elif text[0:10] == 'add-story ':
-                        self.add_msg('story', text[10:])
+                        self.add_msg('story', text[10:], message['from']['id'])
 
                     chat_lenght = self.get_chat_lenght(chat_id)
                     print ('chat lenght {0}'.format(chat_lenght))
