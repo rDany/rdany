@@ -20,41 +20,54 @@ class bot:
     emoji_earth_wireframe = '🌐'
     emoji_number = '#⃣'
 
+    def sqlite_execute(self, query, name, debug = False):
+        try:
+            self.c.execute(query)
+            self.conn.commit()
+            print ('{0} applied'.format(name))
+            return True
+        except sqlite3.OperationalError:
+            print ('{0} already applied'.format(name))
+            if debug:
+                raise
+            return False
+        except:
+            raise
+
     def __init__ (self):
         self.conn = sqlite3.connect('database/rdany.db')
         self.c = self.conn.cursor()
         
-        try:
-            self.c.execute('''CREATE TABLE settings
-                         (id integer primary key, name text, value text)''')
+        exe = self.sqlite_execute('''CREATE TABLE settings
+                         (id integer primary key, name text, value text)''', "settings")
+        if exe:
             self.c.execute("INSERT INTO settings VALUES (1,'last_update','0')")
-            self.conn.commit()
-        except sqlite3.OperationalError:
-            print ("settings exist")
-        except:
-            raise
-            pass
         
-        try:
-            self.c.execute('''CREATE TABLE messages
-                         (id integer primary key, type text, value text)''')
-            self.conn.commit()
-        except sqlite3.OperationalError:
-            print ("messages exist")
-        except:
-            raise
-            pass
+        self.sqlite_execute('''CREATE TABLE messages
+                         (id integer primary key, type text, value text)''', "messages")
         
-        try:
-            self.c.execute('''CREATE TABLE chats
-                         (id integer primary key, lenght integer)''')
-            self.conn.commit()
-        except sqlite3.OperationalError:
-            print ("chats exist")
-        except:
-            raise
-            pass
+        self.sqlite_execute('''CREATE TABLE chats
+                         (id integer primary key, lenght integer)''', "chats")
         
+        self.sqlite_execute('''ALTER TABLE chats
+                         ADD COLUMN last_message integer;''',
+                         "last_message on chats")
+
+        self.sqlite_execute('''ALTER TABLE chats
+                         ADD COLUMN last_message_datetime integer;''',
+                         "last_message_datetime on chats")
+
+        self.sqlite_execute('''ALTER TABLE chats
+                         ADD COLUMN subscribed integer default 1;''',
+                         "subscribred on chats")
+
+        self.sqlite_execute('''CREATE TABLE chat_message
+                         (chat_id integer, message_id integer, count integer default 1, success integer default 0)''',
+                         "chat_message")
+
+        self.sqlite_execute('''CREATE UNIQUE INDEX chat_message_index
+                            on chat_message (chat_id, message_id);''', "chat_message_index")
+
         # We can also close the connection if we are done with it.
         # Just be sure any changes have been committed or they will be lost.
         #conn.close()
@@ -87,18 +100,52 @@ class bot:
         if user_id != self.admin_id:
             print ('Forbidden')
             return False
-        self.c.execute("INSERT INTO messages (type, value) VALUES (?,?)", (type_, msg))
+        self.c.execute("INSERT INTO messages (type, value) VALUES (?,?);", (type_, msg))
         self.conn.commit()
 
-    def get_msg(self, type_):
-        messages = self.c.execute("SELECT * FROM messages WHERE type=?", (type_,))
+    def get_msg(self, type_, chat_id):
+        messages = self.c.execute("SELECT * FROM messages WHERE type=?;", (type_,))
         msg = messages.fetchall()
-        #print (msg)
-        if len(msg) > 0:
-            msg = random.choice(msg)[2]
+        chat_message = self.c.execute("SELECT * FROM chat_message WHERE chat_id=? ORDER BY count ASC;", (chat_id,))
+        cm = chat_message.fetchall()
+
+        unread_messages = []
+        for m in msg:
+            readed = False
+            for c in cm:
+                #print('c: {0}, m: {1}'.format(c[1], m[0]))
+                if c[1] == m[0]: # Matching message_id
+                    readed = True
+                    break
+            if not readed:
+                unread_messages.append(m)
+
+        #print (unread_messages)
+        if len(unread_messages) > 0:
+            msg = random.choice(unread_messages)
             return msg
+        elif len(cm) > 0:
+            c = cm[0]
+            for m in msg:
+                if c[1] == m[0]: # Matching message_id
+                    return m
+            print ('ERROR')
+            return None
         else:
-            return ''
+            return None
+
+    def chat_message(self, message_id, chat_id):
+        chat_message = self.c.execute("SELECT * FROM chat_message WHERE chat_id=? AND message_id=?", (chat_id, message_id))
+        cm = chat_message.fetchone()
+        count = 0
+        if cm:
+            count = cm[2] + 1
+            self.c.execute("UPDATE chat_message SET count=? WHERE chat_id=? AND message_id=?", (count, chat_id, message_id))
+            self.conn.commit()
+        else:
+            self.c.execute("INSERT INTO chat_message (chat_id, message_id) VALUES (?,?)", (chat_id, message_id))
+            self.conn.commit()
+
 
     def add_chat_lenght(self, chat_id):
         chat = self.c.execute("SELECT * FROM chats WHERE id=?", (chat_id,))
@@ -257,13 +304,22 @@ class bot:
 
                     if chat_lenght < 4:
                         print ('first-contact')
-                        msgs.append([self.get_msg('first-contact')])
+                        msg = self.get_msg('first-contact', chat_id)
+                        if msg:
+                            msgs.append([msg[2]])
+                            self.chat_message(msg[0], chat_id)
                     elif chat_lenght < 6:
-                        msgs.append([self.get_msg('idea')])
+                        msg = self.get_msg('idea', chat_id)
+                        if msg:
+                            msgs.append([msg[2]])
+                            self.chat_message(msg[0], chat_id)
                     else:
-                        msgs.append([self.get_msg('story')])
+                        msg = self.get_msg('story', chat_id)
+                        if msg:
+                            msgs.append([msg[2]])
+                            self.chat_message(msg[0], chat_id)
                     
-                    if 0 == chat_lenght % 10 and chat_lenght <= 30:
+                    if 0 == chat_lenght % 10 and chat_lenght <= 30 and chat_lenght > 1:
                         msgs.append(['[Terminal Start]\nCalificá a rDanyBot en StoreBot:\nhttps://telegram.me/storebot?start=rdanybot\n[Terminal End]'])
 
                 self.send_msg(msgs, chat_id, True)
@@ -271,7 +327,7 @@ class bot:
 Bot = bot()
 
 while 1:
-    #Bot.bot_loop()
+    Bot.bot_loop()
     try:
         Bot.bot_loop()
     except KeyboardInterrupt:
