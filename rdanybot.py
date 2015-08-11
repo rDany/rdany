@@ -209,7 +209,31 @@ class bot:
                 'text': msg,
             }
             r = self.send_to_bot('sendMessage', data = data)
-    
+   
+
+    def push_msg(self, msg, chat_id):
+        chats = self.c.execute("SELECT id, subscribed FROM chats")
+        chats = chats.fetchall()
+        if chats:
+            for chat in chats:
+                if chat[1]: # Subscribed
+                    self.send_msg([msg], chat[0], True)
+
+
+    def pause(self, chat_id, active):
+        if active:
+            subscription = 0
+        else:
+            subscription = 1
+        chat = self.c.execute("SELECT id FROM chats WHERE id=?;", (chat_id,))
+        chat = chat.fetchone()
+        if chat:
+            self.c.execute("UPDATE chats SET subscribed=? WHERE id=?;", (subscription, chat_id))
+        else:
+            self.c.execute("INSERT INTO chats (id, lenght, subscribed) VALUES (?,0,?)", (chat_id, subscription))
+        self.conn.commit()
+
+
     def bot_loop(self):
         while 1:
             # Send messages
@@ -270,7 +294,17 @@ class bot:
                             self.send_msg(msgs_commands, chat_id)
                             continue
                         elif text == '/settings':
-                            msgs_commands.append(['[Terminal Start]\nERROR: Settings no ha sido implementado.\n[Terminal End]'])
+                            msgs_commands.append(['[Terminal Start]\nPara pausar los mensajes espontáneas de rDany seleccione /pause\nPara continuar seleccione /continue\n[Terminal End]'])
+                            self.send_msg(msgs_commands, chat_id)
+                            continue
+                        elif text == '/pause':
+                            msgs_commands.append(['[Terminal Start]\nMensajes pausados\n[Terminal End]'])
+                            self.pause(chat_id, True)
+                            self.send_msg(msgs_commands, chat_id)
+                            continue
+                        elif text == '/continue':
+                            msgs_commands.append(['[Terminal Start]\nMensajes activados\n[Terminal End]'])
+                            self.pause(chat_id, False)
                             self.send_msg(msgs_commands, chat_id)
                             continue
                         elif text == '/interference':
@@ -284,7 +318,7 @@ class bot:
                             continue
                         
                         if text[0] == '/':
-                            text = text[1:]
+                            continue
                         elif text[0:9] == '@rDanyBot ':
                             text = text[10:]
 
@@ -296,6 +330,9 @@ class bot:
                         continue
                     elif text[0:10] == 'add-story ':
                         self.add_msg('story', text[10:], message['from']['id'])
+                        continue
+                    elif text[0:11] == 'push-story ':
+                        self.push_msg(text[11:], message['from']['id'])
                         continue
 
                     self.add_chat_lenght(chat_id)
