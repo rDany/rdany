@@ -10,8 +10,13 @@ import sqlite3
 
 
 class bot:
+    bot_username = Config.bot_username
     bot_token = Config.bot_token
     admin_id = Config.admin_id
+    help_text = Config.help_text
+    settins_text = Config.settings_text
+    pause_text = Config.pause_text
+    continue_text = Config.continue_text
 
     chats = {}
 
@@ -127,6 +132,7 @@ class bot:
         elif len(cm) > 0:
             c = cm[0]
             for m in msg:
+                print('c: {0}, m: {1}'.format(c[1], m[0]))
                 if c[1] == m[0]: # Matching message_id
                     return m
             print ('ERROR')
@@ -290,20 +296,20 @@ class bot:
                         text = message['text']
                         msgs_commands = []
                         if text == '/help':
-                            msgs_commands.append(['[Terminal Start]\n"Yo puse en funcionamiento a rDany, solo espero que su sufrimiento en éste mundo no sea muy grande."\n@Eibriel\n\nCalificá a rDanyBot en StoreBot:\nhttps://telegram.me/storebot?start=rdanybot\n[Terminal End]'])
+                            msgs_commands.append([self.help_text])
                             self.send_msg(msgs_commands, chat_id)
                             continue
                         elif text == '/settings':
-                            msgs_commands.append(['[Terminal Start]\nPara pausar los mensajes espontáneas de rDany seleccione /pause\nPara continuar seleccione /continue\n[Terminal End]'])
+                            msgs_commands.append([self.settins_text])
                             self.send_msg(msgs_commands, chat_id)
                             continue
                         elif text == '/pause':
-                            msgs_commands.append(['[Terminal Start]\nMensajes pausados\n[Terminal End]'])
+                            msgs_commands.append([self.pause_text])
                             self.pause(chat_id, True)
                             self.send_msg(msgs_commands, chat_id)
                             continue
                         elif text == '/continue':
-                            msgs_commands.append(['[Terminal Start]\nMensajes activados\n[Terminal End]'])
+                            msgs_commands.append([self.continue_text])
                             self.pause(chat_id, False)
                             self.send_msg(msgs_commands, chat_id)
                             continue
@@ -319,7 +325,7 @@ class bot:
                         
                         if text[0] == '/':
                             continue
-                        elif text[0:9] == '@rDanyBot ':
+                        elif text[0:9] == '@{0} '.format(self.bot_username):
                             text = text[10:]
 
                     if text[0:18] == 'add-first-contact ':
