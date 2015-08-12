@@ -132,7 +132,7 @@ class bot:
         elif len(cm) > 0:
             c = cm[0]
             for m in msg:
-                print('c: {0}, m: {1}'.format(c[1], m[0]))
+                #print('c: {0}, m: {1}'.format(c[1], m[0]))
                 if c[1] == m[0]: # Matching message_id
                     return m
             print ('ERROR')
@@ -292,41 +292,43 @@ class bot:
                     chat_id = message['chat']['id']
 
                     # Text
-                    if 'text' in message:
-                        text = message['text']
-                        msgs_commands = []
-                        if text == '/help':
-                            msgs_commands.append([self.help_text])
-                            self.send_msg(msgs_commands, chat_id)
-                            continue
-                        elif text == '/settings':
-                            msgs_commands.append([self.settins_text])
-                            self.send_msg(msgs_commands, chat_id)
-                            continue
-                        elif text == '/pause':
-                            msgs_commands.append([self.pause_text])
-                            self.pause(chat_id, True)
-                            self.send_msg(msgs_commands, chat_id)
-                            continue
-                        elif text == '/continue':
-                            msgs_commands.append([self.continue_text])
-                            self.pause(chat_id, False)
-                            self.send_msg(msgs_commands, chat_id)
-                            continue
-                        elif text == '/interference':
-                            msgs_commands.append(['[Terminal Start]\nNivel de interferencia en la comunicación: {0}% {1}\n[Terminal End]'.format(random.randint(88, 100), self.emoji_earth_wireframe)])
-                            self.send_msg(msgs_commands, chat_id)
-                            continue
-                        elif text == '/chats':
-                            chats_stats = self.get_chats_stats()
-                            msgs_commands.append(['[Terminal Start]\nChats: {0}\nLongitud promedio: {1}\nRatio promedio: {2}\nMensajes: {3}\n[Terminal End]'.format(chats_stats['count'], chats_stats['average_lenght'], chats_stats['average_ratio'], chats_stats['msg_count'])])
-                            self.send_msg(msgs_commands, chat_id)
-                            continue
-                        
-                        if text[0] == '/':
-                            continue
-                        elif text[0:9] == '@{0} '.format(self.bot_username):
-                            text = text[10:]
+                    if 'text' not in message:
+                        continue
+                    
+                    text = message['text']
+                    msgs_commands = []
+                    if text == '/help':
+                        msgs_commands.append([self.help_text])
+                        self.send_msg(msgs_commands, chat_id)
+                        continue
+                    elif text == '/settings':
+                        msgs_commands.append([self.settins_text])
+                        self.send_msg(msgs_commands, chat_id)
+                        continue
+                    elif text == '/pause':
+                        msgs_commands.append([self.pause_text])
+                        self.pause(chat_id, True)
+                        self.send_msg(msgs_commands, chat_id)
+                        continue
+                    elif text == '/continue':
+                        msgs_commands.append([self.continue_text])
+                        self.pause(chat_id, False)
+                        self.send_msg(msgs_commands, chat_id)
+                        continue
+                    elif text == '/interference':
+                        msgs_commands.append(['[Terminal Start]\nNivel de interferencia en la comunicación: {0}% {1}\n[Terminal End]'.format(random.randint(88, 100), self.emoji_earth_wireframe)])
+                        self.send_msg(msgs_commands, chat_id)
+                        continue
+                    elif text == '/chats':
+                        chats_stats = self.get_chats_stats()
+                        msgs_commands.append(['[Terminal Start]\nChats: {0}\nLongitud promedio: {1}\nRatio promedio: {2}\nMensajes: {3}\n[Terminal End]'.format(chats_stats['count'], chats_stats['average_lenght'], chats_stats['average_ratio'], chats_stats['msg_count'])])
+                        self.send_msg(msgs_commands, chat_id)
+                        continue
+                    
+                    if text[0] == '/':
+                        continue
+                    elif text[0:9] == '@{0} '.format(self.bot_username):
+                        text = text[10:]
 
                     if text[0:18] == 'add-first-contact ':
                         self.add_msg('first-contact', text[18:], message['from']['id'])
@@ -363,9 +365,9 @@ class bot:
                             self.chat_message(msg[0], chat_id)
                     
                     if 0 == chat_lenght % 10 and chat_lenght <= 30 and chat_lenght > 1:
-                        msgs.append(['[Terminal Start]\nCalificá a rDanyBot en StoreBot:\nhttps://telegram.me/storebot?start=rdanybot\n[Terminal End]'])
+                        msgs.append(['[Terminal Start]\nCalificá a {0} en StoreBot:\nhttps://telegram.me/storebot?start={0}\n[Terminal End]'.format(self.bot_username)])
 
-                self.send_msg(msgs, chat_id, True)
+                    self.send_msg(msgs, chat_id, True)
 
 Bot = bot()
 
