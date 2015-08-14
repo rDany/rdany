@@ -297,29 +297,29 @@ class bot:
                     
                     text = message['text']
                     msgs_commands = []
-                    if text == '/help':
+                    if text == '/help' or text == '/help@{0}'.format(self.bot_username):
                         msgs_commands.append([self.help_text])
                         self.send_msg(msgs_commands, chat_id)
                         continue
-                    elif text == '/settings':
+                    elif text == '/settings' or text == '/settings@{0}'.format(self.bot_username):
                         msgs_commands.append([self.settins_text])
                         self.send_msg(msgs_commands, chat_id)
                         continue
-                    elif text == '/pause':
+                    elif text == '/pause' or text == '/pause@{0}'.format(self.bot_username):
                         msgs_commands.append([self.pause_text])
                         self.pause(chat_id, True)
                         self.send_msg(msgs_commands, chat_id)
                         continue
-                    elif text == '/continue':
+                    elif text == '/continue' or text == '/continue@{0}'.format(self.bot_username):
                         msgs_commands.append([self.continue_text])
                         self.pause(chat_id, False)
                         self.send_msg(msgs_commands, chat_id)
                         continue
-                    elif text == '/interference':
+                    elif text == '/interference' or text == '/interference@{0}'.format(self.bot_username):
                         msgs_commands.append(['[Terminal Start]\nNivel de interferencia en la comunicación: {0}% {1}\n[Terminal End]'.format(random.randint(88, 100), self.emoji_earth_wireframe)])
                         self.send_msg(msgs_commands, chat_id)
                         continue
-                    elif text == '/chats':
+                    elif text == '/chats' or text == '/chats@{0}'.format(self.bot_username):
                         chats_stats = self.get_chats_stats()
                         msgs_commands.append(['[Terminal Start]\nChats: {0}\nLongitud promedio: {1}\nRatio promedio: {2}\nMensajes: {3}\n[Terminal End]'.format(chats_stats['count'], chats_stats['average_lenght'], chats_stats['average_ratio'], chats_stats['msg_count'])])
                         self.send_msg(msgs_commands, chat_id)
