@@ -135,7 +135,7 @@ class bot:
                 #print('c: {0}, m: {1}'.format(c[1], m[0]))
                 if c[1] == m[0]: # Matching message_id
                     return m
-            print ('ERROR')
+            print ('ERROR, no messages or missing message')
             return None
         else:
             return None
@@ -347,13 +347,13 @@ class bot:
                     chat_lenght = self.get_chat_lenght(chat_id)
                     print ('chat lenght {0}'.format(chat_lenght))
 
-                    if chat_lenght < 4:
+                    if chat_lenght < 2:
                         print ('first-contact')
                         msg = self.get_msg('first-contact', chat_id)
                         if msg:
                             msgs.append([msg[2]])
                             self.chat_message(msg[0], chat_id)
-                    elif chat_lenght < 6:
+                    elif chat_lenght < 4:
                         msg = self.get_msg('idea', chat_id)
                         if msg:
                             msgs.append([msg[2]])
