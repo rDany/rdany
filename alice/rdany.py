@@ -254,7 +254,7 @@ class bot:
 Bot = bot()
 
 while 1:
-    if config.debug:
+    if Config.debug:
         Bot.bot_loop()
     try:
         Bot.bot_loop()
