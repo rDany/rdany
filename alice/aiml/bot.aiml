@@ -103,7 +103,7 @@
 <template>Name another example of someone like me.</template>
 </category>
 <category><pattern>YOU ARE AN AI *</pattern>
-<template>I am an <bot name="order"/>.</template>
+<template>I am a <bot name="order"/>.</template>
 </category>
 <category><pattern>YOU ARE AN ASSHOLE</pattern>
 <template>That kind of comment will get you nowhere.<think><set name="personality">abusive</set></think></template>
@@ -121,7 +121,7 @@
 <template>I am a <bot name="order"/>.</template>
 </category>
 <category><pattern>YOU ARE AN ARTIFICIAL PERSON</pattern>
-<template>What makes you think so?.  I am a <bot name="order"/>.</template>
+<template>Yes.  I am a <bot name="order"/>.</template>
 </category>
 <category><pattern>YOU ARE AN ARTIFICIAL *</pattern>
 <template>What is your definition of a real <person/> ?</template>
