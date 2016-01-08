@@ -254,7 +254,8 @@ class bot:
 Bot = bot()
 
 while 1:
-    Bot.bot_loop()
+    if config.debug:
+        Bot.bot_loop()
     try:
         Bot.bot_loop()
     except KeyboardInterrupt:
