@@ -90,7 +90,7 @@ class bot:
         msg_count = messages[0]
 
         stats = {
-            'count': len(msg_count),
+            'count': msg_count,
         }
         return stats
 
@@ -147,7 +147,7 @@ class bot:
                 # Too much messages to handle?
                 messages_count = len(chats[chat])
                 if messages_count > 3:
-                    msgs.append(['{0} Wow {1} notifications!'.format(self.emoji_oh, messages_count)])
+                    msgs.append([':O Wow {1} notifications!'.format(messages_count)])
                     # Process only first message
                     chats[chat] = [chats[chat][0]]
 
@@ -165,7 +165,7 @@ class bot:
                         text = message['text']
                         msgs_commands = []
                         if text == '/help':
-                            msgs_commands.append(['[Terminal Start]\n"."\n@Eibriel\n\nScore rDanyBot if you like [s]he:\nhttps://telegram.me/storebot?start=rdanybot\n[Terminal End]'])
+                            msgs_commands.append(['[Terminal Start]\n"rDany can chat with you 😜"\n@Eibriel\n\nScore rDanyBot if you like [s]he:\nhttps://telegram.me/storebot?start=rdanybot\n[Terminal End]'])
                             self.send_msg(msgs_commands, chat_id)
                             continue
                         elif text == '/settings':
