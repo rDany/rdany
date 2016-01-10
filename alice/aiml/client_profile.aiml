@@ -385,7 +385,7 @@
 
 <category><pattern>GET PREDICATES</pattern>
 <template>
-age is <get name="age"/>.<br/>
+age is <get name="age"/>.<br></br>
 birthday is <get name="birthday"/>.<br/>
 birthplace is <get name="birthplace"/>.<br/>
 boyfriend is<get name="boyfriend"/>.<br/>

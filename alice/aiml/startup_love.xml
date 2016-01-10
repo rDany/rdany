@@ -13,7 +13,7 @@
 <learn>aiml/emotion.aiml</learn>
 <learn>aiml/movies.aiml</learn>
 <learn>aiml/primeminister.aiml</learn>
-<learn>aiml/sex.aiml</learn>
+<learn>aiml/sex_love.aiml</learn>
 <learn>aiml/astrology.aiml</learn>
 <learn>aiml/food.aiml</learn>
 <learn>aiml/mp0.aiml</learn>
@@ -71,7 +71,7 @@
 <learn>aiml/pickup.aiml</learn>
 <learn>aiml/salutations.aiml</learn>
 
-<learn>aiml/flirting.aiml</learn>
+<learn>aiml/flirting_love.aiml</learn>
 
 </template>
 </category>
