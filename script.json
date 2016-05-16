@@ -1,0 +1,37 @@
+{
+    "help_text": "",
+    "settins_text": "",
+    "pause_text": "",
+    "continue_text": "",
+    "script" : [
+        {
+            "uuid": "5E4CEC9C-1B05-11E6-840B-403F5F592B21",
+            "message": ["¡Hola!", "¿Hay alguien ahí?"],
+            "answers": {
+                "1": "Hola ¿Quién sos?",
+                "2": "¿Cómo te llamas?"
+            }
+        },
+        {
+            "uuid": "9E4D5B6A-1B0F-11E6-A74F-9FD9FA00A427",
+            "message": ["Soy Dany", "¡Que bueno encontrar a alguien con quién hablar!"],
+            "answers": {
+                "1": "¿Cómo me contactaste?"
+            }
+        },
+        {
+            "uuid": "A640663C-1B0F-11E6-9086-9FD9FA00A427",
+            "message": ["No se", "Encontré tu contacto en algún lugar de internet"],
+            "answers": {
+                "1": "¿Y por qué decidiste hablarme a mi?"
+            }
+        },
+        {
+            "uuid": "ADEA3214-1B0F-11E6-8D0A-9FD9FA00A427",
+            "message": ["Hmmm", "fuiste la primer persona en contestar"],
+            "answers": {
+                "1": "Aaah"
+            }
+        }
+    ]
+}
