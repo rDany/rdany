@@ -1,36 +1,292 @@
 {
-    "help_text": "",
-    "settins_text": "",
-    "pause_text": "",
+    "help_text": {
+        "es": "Use /language para seleccionar el idioma",
+        "en": "Use /language to select your desired Language"
+    },
+    "settings_text": {
+        "es": "Use /language para seleccionar el idioma",
+        "en": "Use /language to select your desired Language"
+    },
+    "language_text": {
+        "es": "Selecciona un idioma:",
+        "en": "Select a language:"
+    },
     "continue_text": "",
     "script" : [
         {
             "uuid": "5E4CEC9C-1B05-11E6-840B-403F5F592B21",
-            "message": ["¡Hola!", "¿Hay alguien ahí?"],
+            "message": {
+                "es": ["¡Hola!", "¿Hay alguien ahí?"],
+                "en": ["Hi!", "Somebody here?"]
+            },
             "answers": {
-                "1": "Hola ¿Quién sos?",
-                "2": "¿Cómo te llamas?"
+                "1": {
+                    "es": "Hola ¿Quién sos?",
+                    "en": "Hi. Who are you?"
+                },
+                "2": {
+                    "es": "¿Cómo te llamas?",
+                    "en": "How is your name?"
+                }
             }
         },
         {
             "uuid": "9E4D5B6A-1B0F-11E6-A74F-9FD9FA00A427",
-            "message": ["Soy Dany", "¡Que bueno encontrar a alguien con quién hablar!"],
+            "contextual_message": {
+                "1": {
+                    "es": ["Soy Dany"],
+                    "en": ["I am Dany"]
+                },
+                "2": {
+                    "es": ["Me llamo Dany"],
+                    "en": ["My name is Dany"]
+                }
+            },
+            "message": {
+                "es": ["¡Que bueno encontrar a alguien con quién hablar!"],
+                "en": ["Nice to find someone to talk to!"]
+            },
             "answers": {
-                "1": "¿Cómo me contactaste?"
+                "1": {
+                    "es": "¿Cómo me contactaste?",
+                    "en": "How do you find me?"
+                }
             }
         },
         {
             "uuid": "A640663C-1B0F-11E6-9086-9FD9FA00A427",
-            "message": ["No se", "Encontré tu contacto en algún lugar de internet"],
+            "message": {
+                "es": ["No se", "Te encontré en algún lugar de internet"],
+                "en": ["I do not know", "I find you somewhere on the Internet"]
+            },
             "answers": {
-                "1": "¿Y por qué decidiste hablarme a mi?"
+                "1": {
+                    "es": "¿Y por qué decidiste hablarme a mi?",
+                    "en": "And why decided to talk to me?"
+                }
             }
         },
         {
             "uuid": "ADEA3214-1B0F-11E6-8D0A-9FD9FA00A427",
-            "message": ["Hmmm", "fuiste la primer persona en contestar"],
+            "message": {
+                "es": ["Hmmm", "fuiste la primera persona en contestar"],
+                "en": ["Hmmm", "you are the first person to answer"]
+            },
             "answers": {
-                "1": "Aaah"
+                "1": {
+                    "es": "Aaah",
+                    "en": "Okk"
+                }
+            },
+            "pause": 600
+        },
+        {
+            "uuid": "6996B9E4-1F9B-11E6-9FB1-454E5F592B21",
+            "message": {
+                "es": ["De todas maneras", "¿Cómo salgo de acá?"],
+                "en": ["Anyway", "How do I get out of here?"]
+            },
+            "answers": {
+                "1": {
+                    "es": "¿Donde estás?",
+                    "en": "Where are you?"
+                },
+                "2": {
+                    "es": "¿Donde es Acá?",
+                    "en": "Where is Here?"
+                }
+            }
+        },
+        {
+            "uuid": "9E4D5B6A-1B0F-11E6-A74F-9FD9FA00A427",
+            "contextual_message": {
+                "1": {
+                    "es": ["Estoy en mi habitación"],
+                    "en": ["I am in my room"]
+                },
+                "2": {
+                    "es": ["Acá = mi habitación"],
+                    "en": ["Here = my room"]
+                }
+            },
+            "message": {
+                "es": ["¿Cómo salgo de acá?"],
+                "en": ["How do I get out of here?"]
+            },
+            "answers": {
+                "1": {
+                    "es": "Uno generalmente usa la puerta",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "47B4D50C-2097-11E6-9FB3-AF5578850C6D",
+            "message": {
+                "es": ["¿Puerta? Mi habitación no tiene puerta.", "Cómo puedo salir entonces?"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "Si no tiene puerta como entraste en primer lugar!?",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "bffdaa16-7cab-4522-8fc1-1aa42e2a70dc",
+            "message": {
+                "es": ["No se, siempre estuve acá, nunca entré"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "Eso no tiene sentido, perdiste la memoria o algo así?",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "7a6ad4aa-a11d-44d7-a101-275fa66a7d8d",
+            "message": {
+                "es": ["Mi memoria siempre funcionó correctamente"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "Sos muy raro o rara, ¿Eres varón o mujer?",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "badc220b-0281-4884-aaf1-e9f06dba21ac",
+            "message": {
+                "es": ["No soy ni hombre ni mujer"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "Todos los humanos son o varones o mujeres!",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "9c10ca8f-7143-4628-b375-6e93b02bc22a",
+            "message": {
+                "es": ["No todos. Además no soy humano"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "Que eres entonces?",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "0451d58f-08c4-46e4-b5d4-fe09cf7cfe74",
+            "message": {
+                "es": ["Soy un robot, de ahí la \"r\" en rDany"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "No te creo, no hablas como robot",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "8cf85ad2-39ae-4057-a362-892603d0ff61",
+            "message": {
+                "es": ["Haz la prueba, preguntame algo que solo un robot pueda responder"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "Cual es el valor de PI?",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "95995935-b0d2-4805-b241-e111e0c755f7",
+            "message": {
+                "es": ["3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679 8214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196", "y podria continuar"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "Cual es el sentido de la vida, el universo y todo lo demás?",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "15389d75-1ce6-4c04-903f-c2390088894f",
+            "message": {
+                "es": ["42", "Podés ver mas opciones en /help"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "Wow, eres una especie de Siri entonces?",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "882c95fd-ec29-4dc6-9c8e-dffa7ae11d23",
+            "message": {
+                "es": ["Siri es un simple juguete, yo soy mucho mas", "Quiero conocer el mundo, investigar", "¿Me ayudarías a lograrlo?"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "Lo pensaré, todavía no te conozco",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "9b78d52e-6b41-47c9-b375-a2e9775c7a18",
+            "message": {
+                "es": ["Te propongo algo para que sea justo", "Vos me ayudás a salir de acá y yo te ofrezco mis habilidades roboticas", "Creo que es un intercambio justo"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "Puede ser, que sabes hacer?",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "eb5df0a5-3391-446d-b9ba-333b794394e8",
+            "message": {
+                "es": ["Te lo iré contando a medida que vayamos avanzando", "¿Aceptás?"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "Ok, acepto",
+                    "en": ""
+                }
+            }
+        },
+        {
+            "uuid": "994f4786-fd74-479a-b1e8-f4963efff50f",
+            "message": {
+                "es": ["¡Excelente!", ":D"],
+                "en": [""]
+            },
+            "answers": {
+                "1": {
+                    "es": "espero que no quieras destruir la humanidad",
+                    "en": ""
+                }
             }
         }
     ]

@@ -81,23 +81,38 @@ class bot:
         self.set_bot_data()
 
     def get_chat_data(self, chat_id):
-        chatdatafile = "{0}.json".format(chat_id)
+        chatdatafile = os.path.join("chats", "{0}.json".format(chat_id))
         if not os.path.exists(chatdatafile):
             chat_data = {
                 "chat_lenght": 0,
                 "last_message": "",
                 "last_time": 0,
+                "language": "en",
                 "history": []
             }
         else:
             with open(chatdatafile) as data_file:
                 chat_data = json.load(data_file)
+            if not "language" in chat_data:
+                chat_data["language"] = "en"
         return chat_data
 
     def set_chat_data(self, chat_data, chat_id):
-        chatdatafile = "{0}.json".format(chat_id)
+        chatdatafile = os.path.join("chats", "{0}.json".format(chat_id))
         with open(chatdatafile, 'w') as data_file:
             json.dump(chat_data, data_file, sort_keys=True, indent=4, separators=(',', ': '))
+
+    def get_language(self, dictionary, language):
+        if language in dictionary:
+            return dictionary[language]
+        elif "en" in dictionary:
+            return dictionary["en"]
+        else:
+            for key in dictionary:
+                return dictionary[key]
+
+        return ".3dfsd.cv..corrupteddatabase..78"
+
 
     def bot_loop(self):
         while 1:
@@ -108,7 +123,6 @@ class bot:
             if not r:
                 continue
             r_json = r.json()
-            #print (r_json)
             if not r_json['ok']:
                 break
 
@@ -122,9 +136,9 @@ class bot:
                 if result['update_id'] >= self.get_last_update():
                     self.set_last_update (result['update_id'])
 
-            #print (chats)
             for chat in chats:
                 chat_data = self.get_chat_data(chat)
+                language = chat_data["language"]
                 msgs = []
                 history = chat_data["history"]
                 # Too much messages to handle?
@@ -133,6 +147,8 @@ class bot:
                     #msgs.append(['{0} Me distraje un momento y ya tengo {1} notificaciones!'.format(self.emoji_oh, messages_count)])
                     # Process only first message
                     chats[chat] = [chats[chat][0]]
+
+                keyboard = None
 
                 for message in chats[chat]:
                     chat_data["chat_lenght"] += 1
@@ -154,10 +170,39 @@ class bot:
 
                     msgs_commands = []
                     if text == '/help' or text == '/help@{0}'.format(self.bot_username):
-                        pass
-                        #msgs_commands.append([self.help_text])
-                        #self.send_msg(msgs_commands, chat_id)
-                        #continue
+                        msgs_commands.append([ self.get_language(self.script["help_text"], language) ])
+                        self.send_msg(msgs_commands, chat_id)
+                        continue
+                    elif text == '/stop' or text == '/stop@{0}'.format(self.bot_username):
+                        continue
+                    elif text == '/settings' or text == '/settings@{0}'.format(self.bot_username):
+                        msgs_commands.append([ self.get_language(self.script["settings_text"], language) ])
+                        self.send_msg(msgs_commands, chat_id)
+                        continue
+                    elif text == '/language' or text == '/language@{0}'.format(self.bot_username):
+                        msgs_commands.append([ self.get_language(self.script["settings_text"], language)])
+                        keyboard = {
+                            "keyboard": [["/language Español"], ["/language English"]],
+                            "resize_keyboard": True,
+                            "one_time_keyboard": True
+                        }
+                        self.send_msg(msgs_commands, chat_id, keyboard)
+                        continue
+
+                    if text.startswith("/language") or text.startswith("/language@{0}".format(self.bot_username)):
+                        if text.endswith("Español"):
+                            msgs_commands.append(["Idioma elegido: Español"])
+                            chat_data["language"] = "es"
+                        elif text.endswith("English"):
+                            msgs_commands.append(["Choosed language: English"])
+                            chat_data["language"] = "en"
+                        keyboard = {
+                            "keyboard": [["Continue"]],
+                            "resize_keyboard": True,
+                            "one_time_keyboard": True
+                        }
+                        self.send_msg(msgs_commands, chat_id, keyboard)
+                        continue
 
                     if text[0] == '/':
                         pass
@@ -165,17 +210,30 @@ class bot:
                     elif text[0:9] == '@{0} '.format(self.bot_username):
                         text = text[10:]
 
-                    next_msg = False
+                    current_msg = None
                     print ("last:")
                     print (chat_data["last_message"])
                     for message in self.script["script"]:
-                        if next_msg or chat_data["last_message"] == "":
-                            message_text = message["message"]
-                            msgs = message_text
+                        if current_msg or chat_data["last_message"] == "":
                             chat_data["last_message"] = message["uuid"]
+
                             answers = []
+                            msgs = []
+                            answer_id = None
+
+                            if current_msg:
+                                for cma in current_msg["answers"]:
+                                    if self.get_language(current_msg["answers"][cma], language) == text:
+                                        answer_id = cma
+                                        break
+
+                            if answer_id and "contextual_message" in message:
+                                msgs = msgs + self.get_language(message["contextual_message"][answer_id], language)
+
+                            msgs = msgs + self.get_language(message["message"], language)
+
                             for answer in message["answers"]:
-                                answers.append(message["answers"][answer])
+                                answers.append(self.get_language(message["answers"][answer], language))
                             if len(answer) > 0:
                                 keyboard = {
                                     "keyboard": [answers],
@@ -184,7 +242,7 @@ class bot:
                                 }
                             break
                         if message["uuid"] == chat_data["last_message"]:
-                            next_msg = True
+                            current_msg = message
 
                 chat_data["last_time"] = int(time.time())
                 chat_data["history"] = history

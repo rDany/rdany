@@ -59,3 +59,5 @@ target/
 avatars/
 config.py
 *.db
+chats/
+bot_data.json
