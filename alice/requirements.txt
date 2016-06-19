@@ -1,3 +1,0 @@
-requests
-aiml
-ndg-httpsclient
