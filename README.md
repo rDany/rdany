@@ -28,8 +28,8 @@ To start ask:
 On `processors` folder are all the different "skills" for rDany
 separated by language.
 
-### Adding Hello World skill
-We want to create a skill that returns "Hello World" when the user
+### Adding Hello World processor
+We want to create a processor that returns "Hello World" when the user
 says "this is a test"
 
 Create the file `processor/es/hello_world.py` and add the following content:
@@ -70,7 +70,48 @@ test the string against the regular expresion, and if the search is
 successful returns a text `Hello World`, with a confidence of `0.9`, and we
 don't change context, so it returns `{}`
 
-And tat is it.
+Finally you can add the processor to the list to load on `process.py`, `self.processor_list` list
+and test it (restarting rDany):
 
-Now you can add the skill to the list to load on `process.py`, `self.processor_list` list
-and
+```
+> this is a test
+Hello World
+
+```
+
+And that is it!
+
+## Using Context
+You can retrieve and save information on the context dictionary:
+predefined context items are:
+```
+context["general.last_time"] (UNIX time of last question)
+context["general.last_processor"] (name of last answer processor)
+context["general.last_confidence"] (confidence of last answer)
+context["general.last_search"] (string of last search)
+context["general.total_questions"] (total number of questions)
+context["general.succesful_answers"] (total number of successful answers)
+context["general.processors_examples"] (a string with all processors examples)
+```
+
+Items with keys starting with `general.` can be accessed by all processors and
+cannot be overwritten.
+
+You can add your own data returning for example:
+```
+return {"text": "Hello World", "confidence": 0.9, "context": {"hello_world.test": True}}
+```
+This will add a new item named `hello_world.test` with the value `True` that
+will be only writable by `hello_world` processor.
+
+There is a especial item name: `last_search`, if you save any value to
+`hello_world.last_search` will be copied to `general.last_search`
+
+There are also `shared` items that can be altered by any processor.
+To add or change any shared item just do the following:
+```
+return {"text": "Hello World", "confidence": 0.9, "context": {"shared.verbosity": True}}
+```
+
+`shared.verbosity` set the verbosity level of the answer and can be altered by
+any processor.

@@ -63,4 +63,4 @@ chats/
 bot_data.json
 telegram.json
 queue/
-processors/es/hello_world
+processors/es/hello_world.py
