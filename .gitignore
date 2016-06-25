@@ -61,3 +61,4 @@ config.py
 *.db
 chats/
 bot_data.json
+telegram.json
