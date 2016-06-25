@@ -23,7 +23,7 @@ class processor:
             pideyoutube = re.search(r"\W*(y|o)\s+(de\s+)?((el|la|una|un|las|los)\s+)?(?P<buscar>.+?)\s*\?*$", string, re.IGNORECASE)
             confidence = 0.5
         if not pideyoutube:
-            pideyoutube = re.search(r"\W*((un|el)\s+)?(v(i|í­)deo|videos|videoclip)\s*\?*$", string, re.IGNORECASE)
+            pideyoutube = re.search(r"\W*((un|el)\s+)?(v(i|í)deo|videos|videoclip)\s*\?*$", string, re.IGNORECASE)
             use_last_search = True
             confidence = 0.6
 

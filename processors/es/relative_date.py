@@ -10,7 +10,7 @@ class processor:
         month_name = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
         now = datetime.date.today()
 
-        pidefecha_relativa = re.search(r"(qu(e|é))\s+(fecha|d(i|í­)a)\s+(es|ser(a|á)|va\sa\sser|fue)\s+(?P<buscar>.+)", string, re.IGNORECASE)
+        pidefecha_relativa = re.search(r"(qu(e|é))\s+(fecha|d(i|í)a)\s+(es|ser(a|á)|va\sa\sser|fue)\s+(?P<buscar>.+)", string, re.IGNORECASE)
         text = None
         if pidefecha_relativa:
             parameter = pidefecha_relativa.group('buscar')
@@ -32,7 +32,7 @@ class processor:
                 text = "Ayer fue"
                 relative_date = now + datetime.timedelta(days=-1)
             else:
-                return {"text": "Que dia sera mañana, pasado mañana, ayer o antes de ayer?", "confidence": 0.7, "context": {}}
+                return {"text": "¿Qué dia sera mañana, pasado mañana, ayer o antes de ayer?", "confidence": 0.7, "context": {}}
 
             text = "{0} {1} {2} de {3} de {4}".format(text, week_day_name[relative_date.weekday()], relative_date.day, month_name[relative_date.month], relative_date.year)
             text = "{0}\nFecha estelar {1}.{2}".format(text, relative_date.year, relative_date.timetuple()[7])

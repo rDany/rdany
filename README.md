@@ -1,5 +1,5 @@
 # rDany
-rDany is a virtual assistant designed to locally.
+rDany is a virtual assistant designed to run locally.
 
 Features:
 - Lightweight

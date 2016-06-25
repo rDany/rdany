@@ -26,7 +26,7 @@ class processor:
                 response = r.json()
                 #print (response)
             else:
-                return None
+                response = {"cod": "0"}
 
             if response["cod"] == "200":
                 #self.city_id = response['id']
@@ -38,6 +38,6 @@ class processor:
                 #self.clouds = response['clouds']['all']
                 text = "{0:.1f} C.".format(response['main']['temp'] - 273.15)
             else:
-                return None
+                text = "No pude conectarme a Openweathermap.org"
 
             return {"text": text, "confidence": 0.4, "context": {}}
