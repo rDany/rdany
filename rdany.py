@@ -148,4 +148,4 @@ class rdany:
 
 
 rd = rdany()
-rd.start()
+rd.start(Config.command_line)

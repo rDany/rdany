@@ -136,7 +136,7 @@ rDany:
 ### Spanish
 rDany:
 - Will talk like an Argentinian, from Córdoba.
-- Make extensive use of `vos`, `sos`, `estás`, `sos`.
+- Make extensive use of `vos`, `sos`, `estás`, `sos`, `podés`.
 
 ### English
 rDany:

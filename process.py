@@ -69,8 +69,6 @@ class process:
             # Removing duplicated
             keywords[lan] = list(set(keywords[lan]))
 
-        self.logger.info('keywords: {0}'.format(keywords))
-
         language = "es"
         for lan in keywords:
             lang_match = False
