@@ -9,11 +9,12 @@ from telegram import telegram
 from process import process
 
 from config import Config
+from common_data import CommonData
 
 class rdany:
 
     def __init__(self):
-        self.useragent = "rDany/1.1 (http://www.rdany.org/rdany/; botmaster@rdany.org)"
+        self.useragent = CommonData.useragent
         self.processors = process(self.useragent)
 
         self.telegram_conection = telegram(Config.bot_username, Config.bot_token, self.useragent)
@@ -23,11 +24,17 @@ class rdany:
             "general.last_confidence": 0,
             "general.last_time": 0,
             "general.last_search": "",
+            "general.last_language": "",
             "general.total_questions": 0,
             "general.succesful_answers": 0,
             "general.processors_examples": self.processors.get_examples(),
             "shared.verbosity": False
         }
+
+        # Logging
+        logging.basicConfig(filename="rdany.log", level=logging.INFO)
+        self.logger = logging.getLogger()
+        self.logger.info("Initialized")
 
     def get_messages(self):
         while not self.end:

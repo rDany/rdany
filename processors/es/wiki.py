@@ -5,13 +5,19 @@ import requests
 class processor:
     example = "¿Quién fue Nicola Tesla?"
     keywords = [
-
+        "quién",
+        "qué",
+        "es",
+        "fue",
+        "era",
+        "será",
+        "sera"
     ]
 
     @staticmethod
     def check_string(string, context):
 
-        pidewiki = re.search(r"\W*qu(e|é|ien|ién)\s+(es|fue|fué|era|sera|será)\s*(el|la|un|una)*\s+(?P<buscar>.+?)\s*\?*$", string, re.IGNORECASE)
+        pidewiki = re.search(r"\W*qu(e|é|ien|ién)\s+(es|fue|era|sera|será)\s*(el|la|un|una)*\s+(?P<buscar>.+?)\s*\?*$", string, re.IGNORECASE)
         if not pidewiki:
           pidewiki = re.search(r"\W*conoc(e|é)s\s*(el|la|a)*\s+(?P<buscar>.+?)\s*\?*$", string, re.IGNORECASE)
         if not pidewiki:

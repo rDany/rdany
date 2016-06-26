@@ -3,6 +3,11 @@ import datetime
 
 class processor:
     example = "¿Qué día fue ayer?"
+    keywords = [
+        "fecha",
+        "día",
+        "dia"
+    ]
 
     @staticmethod
     def check_string(string, context):

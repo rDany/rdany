@@ -5,6 +5,10 @@ from urllib.parse import urlencode
 
 class processor:
     example = "¿Cuanto hablamos?"
+    keywords = [
+        "cuanto",
+        "hablamos"
+    ]
 
     @staticmethod
     def check_string(string, context):

@@ -1,5 +1,6 @@
 import re
 import time
+import logging
 import requests
 
 from urllib.parse import urlencode
@@ -23,7 +24,7 @@ class processor:
         "perdon",
         "perdón",
         "perdona",
-        "disculpa"
+        "disculpa",
         "quise",
         "quiero",
         "decir"
@@ -33,6 +34,7 @@ class processor:
     def check_string(string, context):
         timestamp = int(time.time())
         confidence = 0.7
+        logger = logging.getLogger("picture")
 
         use_last_search = False
 
@@ -60,6 +62,7 @@ class processor:
             #text = "http://duckduckgo.com/?{0}".format(params)
 
             headers = {'user-agent': "rDany/1.1 (http://www.rdany.org/rdany/; botmaster@rdany.org)"}
+            error = False
             try:
                 data = {
                     "sort": "relevance",
@@ -83,25 +86,29 @@ class processor:
                 r = requests.get("https://api.flickr.com/services/rest", params=data, timeout=20, headers=headers)
             except requests.exceptions.ConnectionError:
                 text = "Connection Error"
-                #print (text)
-                return
+                logger.error("Connection Error")
+                error = True
             except requests.exceptions.Timeout:
                 text = "Connection Timeout"
-                #print (text)
-                return
+                logger.error("Connection Timeout")
+                error = True
             r_json = r.json()
 
             if r_json["stat"] != "ok":
-                return
+                logger.error("Bad Stat {0}".format(r_json))
+                error = True
 
-            photo = r_json["photos"]["photo"][0]
-            #total = r_json["total"]
+            if not error:
+                photo = r_json["photos"]["photo"][0]
+                #total = r_json["total"]
 
-            text = "https://www.flickr.com/photos/{0}/{1}/".format(photo["owner"], photo["id"])
+                text = "https://www.flickr.com/photos/{0}/{1}/".format(photo["owner"], photo["id"])
 
-            #photo["title"]
-            #photo["description"]["_content"]
-            #photo["safe"]
+                #photo["title"]
+                #photo["description"]["_content"]
+                #photo["safe"]
+            else:
+                text = "No pude conectarme a Flickr :("
 
             new_context = {
                 "picture.last_search": search

@@ -16,6 +16,6 @@ class processor:
         if pidehelp:
 
             text = "Algunas cosas que podés preguntarme:{0}".format(\
-                context["general.processors_examples"]
+                context["general.processors_examples"]["es"]
             )
             return {"text": text, "confidence": confidence, "context": {}}

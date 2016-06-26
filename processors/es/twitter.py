@@ -4,7 +4,10 @@ from urllib.parse import urlencode
 
 class processor:
     example = "Twittea Hola Mundo"
-    keywords = ["twittea"]
+    keywords = [
+        "twittea",
+        "twitteá"
+    ]
 
     @staticmethod
     def check_string(string, context):
