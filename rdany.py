@@ -45,6 +45,8 @@ class rdany:
             r_json = r.json()
 
             for result in r_json["result"]:
+                if not "text" in result["message"]:
+                    continue
                 timestamp = int(time.time())
                 start_time = timestamp + random.randrange(60)
                 expiration_time = start_time + 5000

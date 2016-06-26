@@ -140,7 +140,7 @@ rDany:
 
 ### English
 rDany:
-- Will talk like an United State citizen, the exact location still need to be defined, feel free to propose one on Issues.
+- Will talk like a someone from New Zealand or Scotland, the exact location still need to be defined, feel free to propose one on Issues.
 
 ### Portuguese
 rDany:
