@@ -41,7 +41,8 @@ class rdany:
             self.telegram_conection.open_session()
             r = self.telegram_conection.get_update()
             #print (r.json())
-
+            if not r:
+                continue
             r_json = r.json()
 
             for result in r_json["result"]:
