@@ -11,9 +11,9 @@ class processor:
     @staticmethod
     def check_string(string, context):
         pidehora = re.search(r"what\s+time", string, re.IGNORECASE)
-        text = None
+        #text = None
         if pidehora:
-            now = datetime.datetime.now()
-            text = "It is {0:02d}:{1:02d}".format(now.hour, now.minute)
+            #now = datetime.datetime.now()
+            #text = "It is {0:02d}:{1:02d}".format(now.hour, now.minute)
 
-            return {"text": text, "confidence": 0.5, "context": {}}
+            return {"actuator": "time", "parameters": {}, "confidence": 0.5, "context": {}}

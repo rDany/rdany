@@ -8,10 +8,8 @@ class processor:
     def check_string(string, context):
         confidence = 1.0
         askverbosity = re.search(r"\W*m(o|ue)strame\s+mas\s+info", string, re.IGNORECASE)
-        text = None
+        new_context = {
+            "shared.verbosity": True
+        }
         if askverbosity:
-            text = "Entendido."
-            new_context = {
-                "shared.verbosity": True
-            }
-            return {"text": text, "confidence": confidence, "context": new_context}
+            return {"actuator": "verbosity", "parameters": {}, "confidence": confidence, "context": new_context}

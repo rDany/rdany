@@ -11,11 +11,5 @@ class processor:
         if not pidehelp:
             pidehelp = re.search(r"\W*qu(é|e)\s+(puedes|sab(é|e)s|pod(é|e)s)\s+hacer", string, re.IGNORECASE)
             confidence = 0.7
-
-        text = None
         if pidehelp:
-
-            text = "Algunas cosas que podés preguntarme:{0}".format(\
-                context["general.processors_examples"]["es"]
-            )
-            return {"text": text, "confidence": confidence, "context": {}}
+            return {"actuator": "help", "parameters": {}, "confidence": confidence, "context": {}}

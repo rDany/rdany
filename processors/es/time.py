@@ -13,12 +13,5 @@ class processor:
     @staticmethod
     def check_string(string, context):
         pidehora = re.search(r"hora", string, re.IGNORECASE)
-        text = None
         if pidehora:
-            now = datetime.datetime.now()
-            if now.hour == 1:
-                text = "Es la {0:02d}:{1:02d}".format(now.hour, now.minute)
-            else:
-                text = "Son las {0:02d}:{1:02d}".format(now.hour, now.minute)
-
-            return {"text": text, "confidence": 0.5, "context": {}}
+            return {"actuator": "time", "parameters": {}, "confidence": 0.5, "context": {}}
