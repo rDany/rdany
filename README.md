@@ -62,7 +62,7 @@ Then we add:
     def check_string(string, context):
         asktest = re.search(r"this\s+is\s+a\s+test", string, re.IGNORECASE)
         if asktest:
-            return {"text": "Hello World", "confidence": 0.9, "context": {}}
+            return {"actuator": "hello_world", "parameters": {}, "confidence": 0.9, "context": {}}
 ```
 
 We define `check_string` function, that takes the `context` parameter (unused here)
@@ -70,8 +70,17 @@ test the string against the regular expresion, and if the search is
 successful returns a text `Hello World`, with a confidence of `0.9`, and we
 don't change context, so it returns `{}`
 
-Finally you can add the processor to the list to load on `process.py`, `self.processor_list` list
-and test it (restarting rDany):
+Create the file `actuator/es/hello_world.py` and add the following content:
+
+```
+class actuator:
+
+    @staticmethod
+    def generate_string(parameters, context):
+        return {"text": "Hello World" }
+```
+
+Finally you can uncomment `"hello_world",` from `es_processors` and `es_actuators` lists and test it (restarting rDany):
 
 ```
 > this is a test
