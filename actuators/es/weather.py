@@ -123,20 +123,39 @@ class actuator:
             #self.temperature = response['main']['temp'] - 273.15
             #self.wind_speed = response['wind']['speed']
             #self.clouds = response['clouds']['all']
-            temp = "{0:.1f} C.".format(response['main']['temp'] - 273.15)
-            temp_min = "{0:.1f} C.".format(response['main']['temp_min'] - 273.15)
-            temp_max = "{0:.1f} C.".format(response['main']['temp_max'] - 273.15)
+            temp = "{0:.1f} C".format(response['main']['temp'] - 273.15)
+            temp_min = "{0:.1f} C".format(response['main']['temp_min'] - 273.15)
+            temp_max = "{0:.1f} C".format(response['main']['temp_max'] - 273.15)
             humidity = response['main']['humidity']
             pressure = response['main']['pressure']
             wind = response['wind']['speed']
+            wind_kmh = (wind / 1000) * 60 * 60
             wind_deg = response['wind']['deg']
+            if wind_deg > 0 and wind_deg < 19:
+                wind_deg_name = "norte"
+            elif wind_deg > 18 and wind_deg < 73:
+                wind_deg_name = "noreste"
+            elif wind_deg > 72 and wind_deg < 119:
+                wind_deg_name = "este"
+            elif wind_deg > 118 and wind_deg < 163:
+                wind_deg_name = "sureste"
+            elif wind_deg > 162 and wind_deg < 199:
+                wind_deg_name = "sur"
+            elif wind_deg > 198 and wind_deg < 253:
+                wind_deg_name = "sureste"
+            elif wind_deg > 252 and wind_deg < 289:
+                wind_deg_name = "oeste"
+            elif wind_deg > 288 and wind_deg < 343:
+                wind_deg_name = "noroeste"
+            elif wind_deg > 342 and wind_deg < 361:
+                wind_deg_name = "norte"
             clouds = response['clouds']['all']
             weather_id = response['weather'][0]['id']
 
             text = "La temperatura es de {0}, {1}.".format(temp, code[weather_id])
-            text = "{0}Con una humedad del {1}%".format(text, humidity)
-            text = "{0}, una presion atmosferica de {1} hectopastales.".format(text, pressure)
-            text = "{0}. Viento del {1} de {2}.".format(text, wind_deg, wind)
+            text = "{0}Con una humedad del {1}%,".format(text, humidity)
+            text = "{0} una presion atmosferica de {1} hectopascales.".format(text, pressure)
+            text = "{0} Viento del {1} de {2} kilometros por hora.".format(text, wind_deg_name, wind_kmh)
             text = "{0}\nLa maxima es de {1} y la minima de {2}.".format(text, temp_min, temp_max)
         else:
             logging.error('API Error: {0}'.format(r.text))
