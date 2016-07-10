@@ -7,12 +7,14 @@ class process:
         self.useragent = useragent
         # Processors
         es_processors = [
+            "currency_converter",
             "date",
             #"hello_world",
             "help",
             "picture",
             "relative_date",
             "stats",
+            "story",
             "time",
             "twitter",
             "verbosity",
@@ -33,12 +35,14 @@ class process:
 
         # Actuators
         es_actuators = [
+            "currency_converter",
             "date",
             #"hello_world",
             "help",
             "picture",
             "relative_date",
             "stats",
+            "story",
             "time",
             "twitter",
             "verbosity",

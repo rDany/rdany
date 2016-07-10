@@ -74,6 +74,11 @@ class actuator:
 
             800: "clear sky",
 
+            801: "few clouds",
+            802: "scattered clouds",
+            803: "broken clouds",
+            804: "overcast clouds",
+
             900: "tornado",
             901: "tropical storm",
             902: "hurricane",
@@ -104,11 +109,11 @@ class actuator:
         url = "http://api.openweathermap.org/data/2.5/weather"
         try:
             r = requests.get(url, timeout=1, headers=headers, params=par)
-        except Timeout:
+        except requests.exceptions.ConnectTimeout:
             logging.error('ConnectionTimeout: {0}'.format(url))
         #print (r)
 
-        if r.status_code == requests.codes.ok:
+        if r and r.status_code == requests.codes.ok:
             response = r.json()
             #print (response)
         else:
