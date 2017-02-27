@@ -1,3 +1,6 @@
+# Deprecated code
+This code is deprecated in favor to a Machine Learning approach.
+
 # rDany
 rDany is a virtual assistant designed to run locally.
 
